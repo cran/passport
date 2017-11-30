@@ -20,7 +20,8 @@ API. See "Details" for more information.}
 names. Currently accepts \code{"en"} (default) and \code{"de"}. Ignored if
 \code{how = "google"} or \code{how = "dstk".}}
 
-\item{factor}{If \code{TRUE}, returns factor instead of character vector.}
+\item{factor}{If \code{TRUE}, returns factor instead of character vector. If not
+supplied, defaults to \code{is.factor(x)}}
 }
 \value{
 A character vector or factor of ISO 2-character country codes or
@@ -55,10 +56,14 @@ fails with a graceful \code{NA} and warning.
 \examples{
 parse_country(c("United States", "USA", "U.S.", "us", "United States of America"))
 
+\dontrun{
 # Unicode support for parsing accented or non-Latin scripts
-parse_country(c("\\u65e5\\u672c", "Japon", "\\u0698\\u0627\\u067e\\u0646"), how = "dstk")
+parse_country(c("\\u65e5\\u672c", "Japon", "\\u0698\\u0627\\u067e\\u0646"), how = "google")
+#> [1] "JP" "JP" "JP" "JP"
 
 # Parse distinct place names via geocoding APIs
-parse_country(c("1600 Pennsylvania Ave, DC", "Eiffel Tower"), how = "dstk")
+parse_country(c("1600 Pennsylvania Ave, DC", "Eiffel Tower"), how = "google")
+#> [1] "US" "FR"
+}
 
 }

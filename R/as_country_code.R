@@ -12,9 +12,6 @@
 #' `"is_independent"`, ISO 4217 currency codes, etc. Backwards conversion will
 #' not work for such cases.
 #'
-#' If converting to country names, use [as_country_name()], which offers
-#' control of short and variant forms.
-#'
 #' See [`codes`] for all options, or run `DT::datatable(codes)` for a
 #' searchable widget.
 #'
@@ -26,6 +23,10 @@
 #'
 #' @return A vector of country codes. Warns if new `NA` values are added.
 #'
+#' @seealso For converting to country names, use [as_country_name()], which
+#'     offers control of short and variant forms. For parsing non-standardized
+#'     country names to codes, use [parse_country()].
+#'
 #' @examples
 #' # Codifies standardized names
 #' as_country_code(c("US", "Taiwan", "Myanmar", "Kosovo", "South Korea"), from = "en")
@@ -35,9 +36,9 @@
 #'                 from = "fifa", to = "iso4217_3c")
 #'
 #' @export
-as_country_code <- function(x, from, to = 'iso2c', factor = is.factor(x)) {
-    to <- gsub('-|\\.', '_', to)
-    from <- gsub('-|\\.', '_', from)
+as_country_code <- function(x, from, to = "iso2c", factor = is.factor(x)) {
+    to <- gsub("-|\\.", "_", to)
+    from <- gsub("-|\\.", "_", from)
 
     check_parameters(x, from, to)
 

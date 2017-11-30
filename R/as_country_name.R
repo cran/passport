@@ -42,10 +42,14 @@
 #'     length 1 or the same length as `x`.
 #' @param variant Whether to use variant alternative name when available. Can
 #'     be length 1 or the same length as `x`.
-#' @param factor If `TRUE`, returns factor instead of character vector.
+#' @param factor If `TRUE`, returns factor instead of character vector. If not
+#'     supplied, defaults to `is.factor(x)`
 #'
 #' @return A character or factor vector of country names. Warns if new `NA`
 #' values are added.
+#'
+#' @seealso For converting standardized names to codes, use [as_country_code()].
+#'     For standardizing names to codes, use [parse_country()].
 #'
 #' @examples
 #' # Usable names for tough-to-standardize places
@@ -59,18 +63,18 @@
 #'
 #' @export
 as_country_name <- function(x,
-                             to = 'en',
-                             from = 'iso2c',
+                             to = "en",
+                             from = "iso2c",
                              short = TRUE,
                              variant = FALSE,
                              factor = is.factor(x)) {
-    to <- gsub('-|\\.', '_', to)
-    from <- gsub('-|\\.', '_', from)
+    to <- gsub("-|\\.", "_", to)
+    from <- gsub("-|\\.", "_", from)
 
     # check arguments
     check_parameters(x, from, to)
     if (!all(lengths(list(short, variant)) %in% c(1, length(x)))) {
-        stop('The length of the `short` and `variant` parameters must be 1 or the same as the input vector.')
+        stop("The length of the `short` and `variant` parameters must be 1 or the same as the input vector.")
     }
 
     convert_country(x = x, to = to, from = from, short = short,
