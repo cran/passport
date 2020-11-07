@@ -1,20 +1,21 @@
-## ----setup, echo = FALSE-------------------------------------------------
+## ----setup, echo = FALSE------------------------------------------------------
 knitr::opts_chunk$set(
   collapse = TRUE,
   comment = "#>",
   fig.path = "passport-"
 )
 
-## ----intro, message=FALSE------------------------------------------------
+## ----intro, message=FALSE-----------------------------------------------------
 library(passport)
 library(gapminder)
-library(tidyverse)    # Works equally well in any grammar.
+library(dplyr)    # Works equally well in any grammar.
+library(tidyr)
 set.seed(47)
 
 grep("Korea", unique(gapminder$country), value = TRUE)
 grep("Yemen", unique(gapminder$country), value = TRUE)
 
-## ----standardize-1-------------------------------------------------------
+## ----standardize-1------------------------------------------------------------
 gap <- gapminder %>% 
     # standardize to ISO 3166 Alpha-2 code
     mutate(country_code = parse_country(country))
@@ -23,32 +24,29 @@ gap %>%
     select(country, country_code, year, lifeExp) %>%
     sample_n(10)
 
-## ----standardize-2, eval=FALSE-------------------------------------------
+## ----standardize-2, eval=FALSE------------------------------------------------
 #  parse_country(c("somewhere in Japan", "日本", "Japon", "जापान"), how = "google")
 #  #> [1] "JP" "JP" "JP" "JP"
 #  
 #  parse_country(c("1600 Pennsylvania Ave, DC", "Eiffel Tower"), how = "google")
 #  #> [1] "US" "FR"
 
-## ----convert-1, message = FALSE------------------------------------------
-# 2016 Olympic gold medal data
-olympics <- read_tsv("https://raw.githubusercontent.com/nbremer/olympicfeathers/gh-pages/data/raw%20medal%20data/Rio%202016%20gold%20medal%20winners.txt")
+## ----convert-1, message = FALSE-----------------------------------------------
+# NATO member defense expenditure data; see `?nato`
+data("nato", package = "passport")
 
-olympics %>% count(country = as_country_code(NOC, from = "ioc"), sort = TRUE)
+nato %>% 
+    select(country_stanag) %>% 
+    distinct() %>%
+    mutate(
+        country_iso = as_country_code(country_stanag, from = "stanag"),
+        country_name = as_country_name(country_stanag, from = "stanag", short = FALSE),
+        country_name_thai = as_country_name(country_stanag, from = "stanag", to = "ta-my")
+    )
 
-## ----convert-2-----------------------------------------------------------
-olympics %>% 
-    count(country = as_country_name(NOC, from = "ioc"), 
-          Event_gender) %>% 
-    spread(Event_gender, n) %>% 
-    arrange(desc(W))
+## ----format, fig.width=5------------------------------------------------------
+library(ggplot2)
 
-## ----convert-3-----------------------------------------------------------
-olympics$NOC %>% unique() %>% 
-    as_country_name(from = "ioc", to = "ta-my") %>% 
-    head(10)
-
-## ----format, fig.width=5-------------------------------------------------
 living_longer <- gap %>% 
     group_by(country_code) %>% 
     summarise(start_life_exp = lifeExp[which.min(year)], 

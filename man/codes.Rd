@@ -4,24 +4,27 @@
 \name{codes}
 \alias{codes}
 \title{Country code and name details and documentation}
-\format{A data.frame of 427 rows and 9 variables.
+\format{
+A data.frame of 427 rows and 9 variables.
 
-Structure:
-\itemize{
-\item \code{column}: The column name in the internal \code{passport:::countries}
-data.frame. Valid for use in \code{from} and \code{to} parameters.
-\item \code{code}: \code{column} with hyphens for underscores, which is a valid IANA
+Variables:
+
+\describe{
+\item{\code{column}}{The column name in the internal \code{passport:::countries}
+data.frame. Valid for use in \code{from} and \code{to} parameters.}
+\item{\code{code}}{\code{column} with hyphens for underscores, which is a valid IANA
 language tag for Unicode CLDR country names. Valid for use in \code{from} and
-\code{to} parameters.
-\item \code{name}: Full name or code name for non-CLDR options.
-\item \code{notes}: Things to note, including deprecations, oddities, etc.
-\item \code{language}: Full language name parsed from \code{code}.
-\item \code{region}: Full country or region name parsed from \code{code}.
-\item \code{script}: Full language script name parsed from \code{code}.
-\item \code{variant}: Full variant parsed from \code{code}. Also used for
-organization-standardized names.
-\item \code{extension}: Further specification of name type.
-}}
+\code{to} parameters.}
+\item{\code{name}}{Full name or code name for non-CLDR options.}
+\item{\code{notes}}{Things to note, including deprecations, oddities, etc.}
+\item{\code{language}}{Full language name parsed from \code{code}.}
+\item{\code{region}}{Full country or region name parsed from \code{code}.}
+\item{\code{script}}{Full language script name parsed from \code{code}.}
+\item{\code{variant}}{Full variant parsed from \code{code}. Also used for
+organization-standardized names.}
+\item{\code{extension}}{Further specification of name type.}
+}
+}
 \usage{
 codes
 }
@@ -35,7 +38,7 @@ similar approximations for institutional names (e.g. \code{"en-iso"}), and short
 names (e.g. \code{"iso2c"}) for country codes.
 }
 \details{
-All functions can accept codes separated with underscores \code{_}, hyphens \code{-},
+All functions can accept codes separated with underscores \verb{_}, hyphens \code{-},
 or periods \code{.}.
 }
 \examples{
